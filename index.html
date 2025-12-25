@@ -270,37 +270,9 @@
             opacity: 0.9;
         }
 
-        /* Click counter */
+        /* Click counter - HIDDEN */
         .click-counter {
-            color: white;
-            font-size: 16px;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 20px;
-            border-radius: 20px;
-            display: none;
-            backdrop-filter: blur(10px);
-            margin: 20px auto;
-            max-width: 200px;
-        }
-
-        .click-counter.show {
-            display: block;
-        }
-
-        .click-progress {
-            width: 160px;
-            height: 6px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 3px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-
-        .click-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            width: 0%;
-            transition: width 0.3s ease;
+            display: none !important;
         }
 
         /* Login Modal */
@@ -606,6 +578,7 @@
         <div class="target-section">
             <button id="secretTarget" class="target-button" title="Click 7 times to unlock"></button>
             
+            <!-- Click counter is hidden by CSS -->
             <div id="clickCounter" class="click-counter">
                 <div>Clicks: <span id="clickCount">0</span>/7</div>
                 <div class="click-progress">
@@ -935,21 +908,16 @@
         // Start emoji animation
         animateEmojis();
         
-        // Check if already authenticated
-        if (localStorage.getItem('webswanAuthenticated') === 'true') {
-            showBackOffice();
-        }
+        // REMOVED: Auto-login functionality
+        // The page will now always start at the login screen
         
         // Track clicks on the target button
         secretTarget.addEventListener('click', function() {
             clickCount++;
             
-            // Update click counter display
+            // Update click counter (but keep it hidden)
             clickCountDisplay.textContent = clickCount;
             clickProgressBar.style.width = `${(clickCount / requiredClicks) * 100}%`;
-            
-            // Show counter
-            clickCounter.classList.add('show');
             
             clearTimeout(clickTimeout);
             
@@ -958,7 +926,6 @@
                 clickCount = 0;
                 clickCountDisplay.textContent = '0';
                 clickProgressBar.style.width = '0%';
-                clickCounter.classList.remove('show');
             }, 2000);
             
             // If 7 consecutive clicks, show login modal
@@ -966,7 +933,6 @@
                 loginModal.classList.add('active');
                 passwordInput.focus();
                 clickCount = 0; // Reset for next time
-                clickCounter.classList.remove('show');
             }
         });
         
